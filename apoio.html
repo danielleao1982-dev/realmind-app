@@ -1,0 +1,42 @@
+
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RealMind - Rede de Apoio</title>
+<style>
+ body{margin:0;font-family:Arial,sans-serif;color:#fff;background:linear-gradient(135deg,#ff416c,#ff4b2b);text-align:center}
+ header{padding:18px;background:rgba(0,0,0,.3)}
+ header h1{margin:0}
+ .wrap{padding:18px}
+ .contact{background:rgba(0,0,0,.3);margin:10px auto;padding:12px;border-radius:12px;width:86%;display:flex;justify-content:space-between;align-items:center}
+ .call{background:#00c9ff;border:none;color:#fff;padding:8px 12px;border-radius:8px;cursor:pointer}
+ .btn{display:block;margin:12px auto;width:86%;max-width:420px;padding:14px;border-radius:12px;background:rgba(255,255,255,.15);font-weight:700;text-decoration:none;color:#fff}
+ .sos{background:rgba(0,0,0,.35);padding:12px;border-radius:12px;margin-top:12px}
+</style>
+</head>
+<body>
+<header><h1>🆘 Rede de Apoio</h1><p>Conecte-se com quem pode ajudar</p></header>
+<div class="wrap">
+  <h3>Contatos de confiança</h3>
+  <div class="contact"><span>👩 Mãe</span><button class="call" onclick="alert('Ligando para Mãe...')">Ligar</button></div>
+  <div class="contact"><span>👨 Irmão</span><button class="call" onclick="alert('Ligando para Irmão...')">Ligar</button></div>
+  <div class="contact"><span>👩‍⚕️ Psicóloga</span><button class="call" onclick="alert('Ligando para Psicóloga...')">Ligar</button></div>
+
+  <h3>Serviços</h3>
+  <a class="btn" href="#" onclick="alert('Ligando para CVV 188...')">📞 CVV 188</a>
+  <a class="btn" href="#" onclick="alert('Ligando para SAMU 192...')">🚑 SAMU 192</a>
+
+  <div class="sos">
+    <h4>Mensagem SOS</h4>
+    <p id="msg">Oi, estou passando por uma crise. Preciso de ajuda agora. Pode falar comigo?</p>
+    <a class="btn" href="#" onclick="copy()">📋 Copiar Mensagem</a>
+  </div>
+
+  <a class="btn" href="menu.html">⬅️ Voltar ao Menu</a>
+</div>
+<script>
+ function copy(){const t=document.getElementById('msg').innerText;navigator.clipboard.writeText(t).then(()=>alert('Mensagem copiada! Cole no WhatsApp ou SMS.'))}
+</script>
+</body>
+</html>

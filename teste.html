@@ -1,0 +1,50 @@
+
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RealMind - Teste de Realidade</title>
+<style>
+ body{margin:0;font-family:Arial,sans-serif;color:#fff;background:linear-gradient(135deg,#43cea2,#185a9d);text-align:center}
+ header{padding:18px;background:rgba(0,0,0,.3)}
+ header h1{margin:0}
+ .wrap{padding:18px}
+ .btn{display:block;margin:12px auto;width:86%;max-width:420px;padding:14px;border-radius:12px;background:rgba(255,255,255,.15);font-weight:700;text-decoration:none;color:#fff}
+ .btn:active{transform:translateY(1px)}
+ #result{display:none;background:rgba(0,0,0,.35);margin-top:12px;padding:12px;border-radius:10px}
+ .back{margin:18px auto 26px}
+</style>
+</head>
+<body>
+<header><h1>🌀 Teste de Realidade</h1><p>Verifique de forma segura</p></header>
+<div class="wrap">
+  <a class="btn" href="#" onclick="checkCamera()">📷 Usar Câmera (simulação)</a>
+  <a class="btn" href="#" onclick="logicQuestion()">🧠 Pergunta de Lógica</a>
+  <a class="btn" href="#" onclick="memoryTest()">📝 Teste de Memória</a>
+  <a class="btn" href="#" onclick="socialCheck()">👥 Verificação Social</a>
+  <div id="result"></div>
+  <a class="btn back" href="menu.html">⬅️ Voltar ao Menu</a>
+</div>
+<script>
+  function show(msg){const r=document.getElementById('result');r.textContent=msg;r.style.display='block'}
+  function checkCamera(){show('Verificando pela câmera... (simulação; recurso em desenvolvimento)')}
+  function logicQuestion(){
+    const ans=prompt('Qual é a data de hoje? (formato dd/mm/aaaa)');
+    const today=new Date().toLocaleDateString('pt-BR');
+    if(ans===today){show('✅ Correto! Isso ajuda a confirmar sua realidade.')} else {show('⚠️ Data diferente da real ('+today+'). Reavalie com calma.')}
+  }
+  function memoryTest(){
+    alert('Memorize estas palavras: Sol, Casa, Gato');
+    setTimeout(()=>{
+      const recall=prompt('Digite as 3 palavras que você viu:');
+      if(recall && recall.toLowerCase().includes('sol') && recall.toLowerCase().includes('casa') && recall.toLowerCase().includes('gato')){
+        show('✅ Ótimo! Sua memória imediata está coerente.')
+      }else{
+        show('⚠️ Você não lembrou todas. Faça uma pausa e tente uma técnica de relaxamento.')
+      }
+    },1200);
+  }
+  function socialCheck(){show('Peça a alguém próximo: “Você também está vendo/ouvindo isso?”. A confirmação social é muito útil.')}
+</script>
+</body>
+</html>

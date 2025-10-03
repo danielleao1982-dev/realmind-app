@@ -1,7 +1,8 @@
 {
   "name": "RealMind",
   "short_name": "RealMind",
-  "start_url": "index.html",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#E6F0FA",
   "theme_color": "#9C8DF0",

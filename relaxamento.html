@@ -1,0 +1,36 @@
+
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RealMind - Relaxamento</title>
+<style>
+ body{margin:0;font-family:Arial,sans-serif;color:#fff;background:linear-gradient(135deg,#11998e,#38ef7d);text-align:center}
+ header{padding:18px;background:rgba(0,0,0,.3)}
+ header h1{margin:0}
+ .wrap{padding:18px}
+ .btn{display:block;margin:12px auto;width:86%;max-width:420px;padding:14px;border-radius:12px;background:rgba(255,255,255,.15);font-weight:700;text-decoration:none;color:#fff}
+ #circle{margin:28px auto;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.25);animation:breathe 8s infinite}
+ @keyframes breathe{0%{transform:scale(1)}50%{transform:scale(1.8)}100%{transform:scale(1)}}
+ #phrase{display:none;background:rgba(0,0,0,.35);margin-top:12px;padding:12px;border-radius:10px}
+</style>
+</head>
+<body>
+<header><h1>🌿 Relaxamento</h1><p>Respire junto e acalme</p></header>
+<div class="wrap">
+  <h3>Respiração Guiada</h3>
+  <div id="circle"></div>
+  <p>Inspire quando o círculo crescer, expire quando diminuir.</p>
+  <a class="btn" href="#" onclick="play('chuva')">🎧 Sons de Chuva (simulação)</a>
+  <a class="btn" href="#" onclick="play('mar')">🌊 Sons do Mar (simulação)</a>
+  <a class="btn" href="#" onclick="play('floresta')">🌳 Sons de Floresta (simulação)</a>
+  <a class="btn" href="#" onclick="phrase()">💬 Frase Calmante</a>
+  <div id="phrase"></div>
+  <a class="btn" href="menu.html">⬅️ Voltar ao Menu</a>
+</div>
+<script>
+ function play(t){alert('🔊 Reproduzindo som de '+t+' (simulação).')}
+ function phrase(){const frases=['Você está seguro agora.','Respire fundo, tudo passa.','Você é mais forte do que imagina.','Um passo de cada vez.','Seus pensamentos vão e vêm, como nuvens.'];const pick=frases[Math.floor(Math.random()*frases.length)];const el=document.getElementById('phrase');el.textContent=pick;el.style.display='block'}
+</script>
+</body>
+</html>

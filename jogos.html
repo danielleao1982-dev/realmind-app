@@ -1,0 +1,42 @@
+
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RealMind - Jogos Relaxantes</title>
+<style>
+ body{margin:0;font-family:Arial,sans-serif;color:#fff;background:linear-gradient(135deg,#00c6ff,#0072ff);text-align:center}
+ header{padding:18px;background:rgba(0,0,0,.3)}
+ header h1{margin:0}
+ .wrap{padding:18px}
+ .btn{display:block;margin:12px auto;width:86%;max-width:420px;padding:14px;border-radius:12px;background:rgba(255,255,255,.15);font-weight:700;text-decoration:none;color:#fff}
+ .bubble{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.65);display:inline-block;margin:8px;cursor:pointer}
+ #wordGame{display:none;background:rgba(0,0,0,.35);margin-top:12px;padding:12px;border-radius:10px}
+</style>
+</head>
+<body>
+<header><h1>🎮 Jogos Relaxantes</h1><p>Distração leve para acalmar</p></header>
+<div class="wrap">
+  <h3>🫧 Estoure as bolhas</h3>
+  <div id="bubbles"></div>
+  <a class="btn" href="#" onclick="gen()">🔄 Novas Bolhas</a>
+
+  <h3>🎨 Cores Calmantes</h3>
+  <a class="btn" href="#" onclick="bg('#6a11cb,#2575fc')">💜 Roxo</a>
+  <a class="btn" href="#" onclick="bg('#43cea2,#185a9d')">💚 Verde</a>
+  <a class="btn" href="#" onclick="bg('#f7971e,#ffd200')">💛 Amarelo</a>
+
+  <h3>🔠 Palavra Oculta</h3>
+  <a class="btn" href="#" onclick="word()">Jogar</a>
+  <div id="wordGame"></div>
+
+  <a class="btn" href="menu.html">⬅️ Voltar ao Menu</a>
+</div>
+<script>
+ function gen(){const c=document.getElementById('bubbles');c.innerHTML='';for(let i=0;i<7;i++){const b=document.createElement('div');b.className='bubble';b.onclick=()=>b.style.display='none';c.appendChild(b)}}
+ function bg(colors){document.body.style.background='linear-gradient(135deg,'+colors+')'}
+ function word(){const words=['PAZ','CALMA','LUZ'];const chosen=words[Math.floor(Math.random()*words.length)];const scrambled=chosen.split('').sort(()=>Math.random()-.5).join('');const guess=prompt('Desembaralhe as letras: '+scrambled);const box=document.getElementById('wordGame');box.style.display='block';box.textContent=(guess && guess.toUpperCase()===chosen)?'✅ Você acertou! A palavra era: '+chosen:'⚠️ Quase! A correta era: '+chosen}
+ gen();
+</script>
+</body>
+</html>

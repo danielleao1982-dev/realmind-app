@@ -4,18 +4,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RealMind — Splash</title>
+<title>RealMind - Splash</title>
 <link rel="manifest" href="manifest.json">
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js');
-  }
-</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js');</script>
 <style>
- body{margin:0;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
-      background:#E6F0FA;font-family:Arial,sans-serif;color:#2D3E50;}
- .icon{width:120px;height:120px;border-radius:50%;background:#9C8DF0;display:flex;align-items:center;justify-content:center;
-       box-shadow:0 6px 16px rgba(0,0,0,.18);margin-bottom:20px}
+ body{margin:0;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#E6F0FA;font-family:Arial,sans-serif;color:#2D3E50;}
+ .icon{width:120px;height:120px;border-radius:50%;background:#9C8DF0;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(0,0,0,.18);margin-bottom:20px}
  .icon svg{width:70px;height:70px;fill:#fff}
  h1{margin:0;font-size:28px;color:#2D3E50}
  p{margin:8px 0 20px 0;font-size:14px;opacity:.8}

@@ -1,0 +1,34 @@
+
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RealMind - Diário</title>
+<style>
+ body{margin:0;font-family:Arial,sans-serif;color:#fff;background:linear-gradient(135deg,#f7971e,#ffd200);text-align:center}
+ header{padding:18px;background:rgba(0,0,0,.3)}
+ header h1{margin:0}
+ .wrap{padding:18px}
+ textarea{width:92%;height:110px;border-radius:12px;border:none;padding:10px;font-size:16px}
+ .btn{display:block;margin:12px auto;width:86%;max-width:420px;padding:14px;border-radius:12px;background:rgba(255,255,255,.2);font-weight:700;text-decoration:none;color:#fff}
+ .note{background:rgba(0,0,0,.3);margin:10px auto;padding:10px;border-radius:10px;width:92%;text-align:left;position:relative}
+ .del{position:absolute;right:10px;top:6px;color:#ffdddd;cursor:pointer}
+</style>
+</head>
+<body>
+<header><h1>📖 Diário</h1><p>Registre seus pensamentos</p></header>
+<div class="wrap">
+  <textarea id="note" placeholder="Escreva aqui sua anotação..."></textarea>
+  <a class="btn" href="#" onclick="save()">💾 Salvar Anotação</a>
+  <h3>Anotações Salvas</h3>
+  <div id="list"></div>
+  <a class="btn" href="menu.html">⬅️ Voltar ao Menu</a>
+</div>
+<script>
+  function load(){const notes=JSON.parse(localStorage.getItem('notes')||'[]');const list=document.getElementById('list');list.innerHTML='';notes.forEach((n,i)=>{const d=document.createElement('div');d.className='note';d.innerHTML='<span class=\"del\" onclick=\"delNote('+i+')\">❌</span><p>'+n.text+'</p><small>'+n.date+'</small>';list.appendChild(d)})}
+  function save(){const t=document.getElementById('note').value.trim();if(!t){alert('Escreva algo antes de salvar!');return}const notes=JSON.parse(localStorage.getItem('notes')||'[]');notes.push({text:t,date:new Date().toLocaleString('pt-BR')});localStorage.setItem('notes',JSON.stringify(notes));document.getElementById('note').value='';load()}
+  function delNote(i){const notes=JSON.parse(localStorage.getItem('notes')||'[]');notes.splice(i,1);localStorage.setItem('notes',JSON.stringify(notes));load()}
+  load();
+</script>
+</body>
+</html>
