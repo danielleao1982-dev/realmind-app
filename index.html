@@ -1,0 +1,33 @@
+
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RealMind — Splash</title>
+<link rel="manifest" href="manifest.json">
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+  }
+</script>
+<style>
+ body{margin:0;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
+      background:#E6F0FA;font-family:Arial,sans-serif;color:#2D3E50;}
+ .icon{width:120px;height:120px;border-radius:50%;background:#9C8DF0;display:flex;align-items:center;justify-content:center;
+       box-shadow:0 6px 16px rgba(0,0,0,.18);margin-bottom:20px}
+ .icon svg{width:70px;height:70px;fill:#fff}
+ h1{margin:0;font-size:28px;color:#2D3E50}
+ p{margin:8px 0 20px 0;font-size:14px;opacity:.8}
+ a.btn{background:#9C8DF0;color:#fff;padding:12px 32px;border-radius:28px;text-decoration:none;font-weight:700}
+</style>
+</head>
+<body>
+  <div class="icon">
+    <svg viewBox="0 0 24 24"><path d="M12 2c-4.9 0-9 3.6-9 8 0 3.1 2.2 5.9 5.5 7.2l.5.2V20c0 1.1.9 2 2 2h2c1.1 0 2-.9 2-2v-2.6l.5-.2C18.8 15.9 21 13.1 21 10c0-4.4-4.1-8-9-8z"/></svg>
+  </div>
+  <h1>RealMind</h1>
+  <p>Âncora da sua mente</p>
+  <a class="btn" href="login.html">Entrar</a>
+</body>
+</html>
