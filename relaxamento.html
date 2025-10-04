@@ -3,16 +3,14 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RealMind - Relaxamento</title>
+<title>RealMind — Relaxamento</title>
 <style>
- body{margin:0;font-family:Arial,sans-serif;color:#fff;background:linear-gradient(135deg,#11998e,#38ef7d);text-align:center}
- header{padding:18px;background:rgba(0,0,0,.3)}
- header h1{margin:0}
- .wrap{padding:18px}
- .btn{display:block;margin:12px auto;width:86%;max-width:420px;padding:14px;border-radius:12px;background:rgba(255,255,255,.15);font-weight:700;text-decoration:none;color:#fff}
+ body{margin:0;font-family:Arial,sans-serif;color:#fff;background:linear-gradient(135deg,#11998e,#38ef7d)}
+ header{padding:18px;text-align:center;background:rgba(0,0,0,.25)}
+ .wrap{padding:16px;text-align:center}
+ .btn{display:inline-block;margin:6px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.15);color:#fff;text-decoration:none;font-weight:700}
  #circle{margin:28px auto;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.25);animation:breathe 8s infinite}
  @keyframes breathe{0%{transform:scale(1)}50%{transform:scale(1.8)}100%{transform:scale(1)}}
- #phrase{display:none;background:rgba(0,0,0,.35);margin-top:12px;padding:12px;border-radius:10px}
 </style>
 </head>
 <body>
@@ -21,16 +19,34 @@
   <h3>Respiração Guiada</h3>
   <div id="circle"></div>
   <p>Inspire quando o círculo crescer, expire quando diminuir.</p>
-  <a class="btn" href="#" onclick="play('chuva')">🎧 Sons de Chuva (simulação)</a>
-  <a class="btn" href="#" onclick="play('mar')">🌊 Sons do Mar (simulação)</a>
-  <a class="btn" href="#" onclick="play('floresta')">🌳 Sons de Floresta (simulação)</a>
-  <a class="btn" href="#" onclick="phrase()">💬 Frase Calmante</a>
-  <div id="phrase"></div>
-  <a class="btn" href="menu.html">⬅️ Voltar ao Menu</a>
+  <h3>Sons Ambientes</h3>
+  <a class="btn" href="#" onclick="play('rain')">🌧️ Chuva</a>
+  <a class="btn" href="#" onclick="play('ocean')">🌊 Mar</a>
+  <a class="btn" href="#" onclick="play('forest')">🌳 Floresta</a>
+  <a class="btn" href="#" style="background:#ff8c8c" onclick="stop()">⏹️ Parar</a>
+  <a class="btn" href="menu.html" style="display:block;margin-top:12px">⬅️ Voltar ao Menu</a>
 </div>
 <script>
- function play(t){alert('🔊 Reproduzindo som de '+t+' (simulação).')}
- function phrase(){const frases=['Você está seguro agora.','Respire fundo, tudo passa.','Você é mais forte do que imagina.','Um passo de cada vez.','Seus pensamentos vão e vêm, como nuvens.'];const pick=frases[Math.floor(Math.random()*frases.length)];const el=document.getElementById('phrase');el.textContent=pick;el.style.display='block'}
+let ctx,gain; let currentNodes=[];
+function ensureCtx(){ if(!ctx){ ctx=new (window.AudioContext||window.webkitAudioContext)(); gain=ctx.createGain(); gain.gain.value=0.2; gain.connect(ctx.destination);} }
+function noiseNode(type='white'){
+  const bufferSize=2*ctx.sampleRate;
+  const buffer=ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data=buffer.getChannelData(0); let lastOut=0;
+  for(let i=0;i<bufferSize;i++){ let white=Math.random()*2-1;
+    if(type==='white') data[i]=white;
+    if(type==='pink'){ lastOut = 0.98*lastOut + 0.02*white; data[i]=lastOut*3.5; }
+    if(type==='brown'){ lastOut = (lastOut + 0.02*white)/1.02; data[i]=lastOut*5; }
+  }
+  const node=ctx.createBufferSource(); node.buffer=buffer; node.loop=true; return node;
+}
+function stop(){ currentNodes.forEach(n=>{try{n.stop()}catch(e){}}); currentNodes=[]; }
+function play(kind){
+  ensureCtx(); stop();
+  if(kind==='rain'){ const src=noiseNode('white'); const bp=ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=1000; bp.Q.value=0.8; src.connect(bp); bp.connect(gain); src.start(); currentNodes=[src]; }
+  if(kind==='ocean'){ const src=noiseNode('brown'); const lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=500; src.connect(lp); lp.connect(gain); src.start(); currentNodes=[src]; }
+  if(kind==='forest'){ const src=noiseNode('pink'); const lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=1500; const trem=ctx.createOscillator(); const tGain=ctx.createGain(); tGain.gain.value=0.1; trem.frequency.value=0.2; trem.connect(tGain); tGain.connect(gain.gain); trem.start(); src.connect(lp); lp.connect(gain); src.start(); currentNodes=[src,trem]; }
+}
 </script>
 </body>
 </html>

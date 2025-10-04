@@ -3,48 +3,64 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RealMind - Teste de Realidade</title>
+<title>RealMind — Teste de Realidade</title>
 <style>
- body{margin:0;font-family:Arial,sans-serif;color:#fff;background:linear-gradient(135deg,#43cea2,#185a9d);text-align:center}
- header{padding:18px;background:rgba(0,0,0,.3)}
- header h1{margin:0}
- .wrap{padding:18px}
- .btn{display:block;margin:12px auto;width:86%;max-width:420px;padding:14px;border-radius:12px;background:rgba(255,255,255,.15);font-weight:700;text-decoration:none;color:#fff}
- .btn:active{transform:translateY(1px)}
+ body{margin:0;font-family:Arial,sans-serif;color:#fff;background:linear-gradient(135deg,#43cea2,#185a9d)}
+ header{padding:18px;text-align:center;background:rgba(0,0,0,.25)}
+ .wrap{padding:16px;text-align:center}
+ .btn{display:inline-block;margin:6px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.15);color:#fff;text-decoration:none;font-weight:700}
  #result{display:none;background:rgba(0,0,0,.35);margin-top:12px;padding:12px;border-radius:10px}
- .back{margin:18px auto 26px}
 </style>
 </head>
 <body>
 <header><h1>🌀 Teste de Realidade</h1><p>Verifique de forma segura</p></header>
 <div class="wrap">
-  <a class="btn" href="#" onclick="checkCamera()">📷 Usar Câmera (simulação)</a>
-  <a class="btn" href="#" onclick="logicQuestion()">🧠 Pergunta de Lógica</a>
-  <a class="btn" href="#" onclick="memoryTest()">📝 Teste de Memória</a>
-  <a class="btn" href="#" onclick="socialCheck()">👥 Verificação Social</a>
+  <video id="camera" autoplay playsinline style="width:100%;max-width:420px;border-radius:12px;background:#000"></video>
+  <div>
+    <a class="btn" href="#" onclick="startCam()">Abrir câmera</a>
+    <a class="btn" href="#" style="background:#ff8c8c" onclick="stopCam()">Parar</a>
+  </div>
+  <small id="camStatus">Recurso requer HTTPS e permissão do navegador</small>
+
+  <h3>✅ Checagens rápidas</h3>
+  <a class="btn" href="#" onclick="logicQuestion()">Pergunta de Lógica</a>
+  <a class="btn" href="#" onclick="memoryTest()">Teste de Memória</a>
+  <a class="btn" href="#" onclick="fiveSenses()">Exercício dos 5 sentidos</a>
   <div id="result"></div>
-  <a class="btn back" href="menu.html">⬅️ Voltar ao Menu</a>
+
+  <a class="btn" href="menu.html">⬅️ Voltar ao Menu</a>
 </div>
 <script>
-  function show(msg){const r=document.getElementById('result');r.textContent=msg;r.style.display='block'}
-  function checkCamera(){show('Verificando pela câmera... (simulação; recurso em desenvolvimento)')}
-  function logicQuestion(){
-    const ans=prompt('Qual é a data de hoje? (formato dd/mm/aaaa)');
-    const today=new Date().toLocaleDateString('pt-BR');
-    if(ans===today){show('✅ Correto! Isso ajuda a confirmar sua realidade.')} else {show('⚠️ Data diferente da real ('+today+'). Reavalie com calma.')}
+let streamRef=null;
+async function startCam(){
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+    document.getElementById('camera').srcObject=stream;
+    streamRef=stream;
+    document.getElementById('camStatus').textContent='Câmera ativa. Aponte para o que deseja verificar.';
+  }catch(e){
+    alert('Não foi possível acessar a câmera: '+e.message);
   }
-  function memoryTest(){
-    alert('Memorize estas palavras: Sol, Casa, Gato');
-    setTimeout(()=>{
-      const recall=prompt('Digite as 3 palavras que você viu:');
-      if(recall && recall.toLowerCase().includes('sol') && recall.toLowerCase().includes('casa') && recall.toLowerCase().includes('gato')){
-        show('✅ Ótimo! Sua memória imediata está coerente.')
-      }else{
-        show('⚠️ Você não lembrou todas. Faça uma pausa e tente uma técnica de relaxamento.')
-      }
-    },1200);
-  }
-  function socialCheck(){show('Peça a alguém próximo: “Você também está vendo/ouvindo isso?”. A confirmação social é muito útil.')}
+}
+function stopCam(){ if(streamRef){ streamRef.getTracks().forEach(t=>t.stop()); streamRef=null; document.getElementById('camStatus').textContent='Câmera parada.'; } }
+function show(msg){const r=document.getElementById('result');r.textContent=msg;r.style.display='block'}
+function logicQuestion(){
+  const ans=prompt('Que dia da semana é hoje?');
+  const day=new Intl.DateTimeFormat('pt-BR',{weekday:'long'}).format(new Date());
+  if(ans && ans.toLowerCase().includes(day.toLowerCase())) show('✅ Correto! Hoje é '+day+'.');
+  else show('⚠️ Hoje é '+day+'. Respire fundo e tente novamente.');
+}
+function memoryTest(){
+  const seq=['Azul','Mesa','Gato','3'];
+  alert('Memorize: '+seq.join(' - '));
+  setTimeout(()=>{
+    const recall=prompt('Digite as palavras e número (na ordem):');
+    if(!recall){show('Sem resposta.');return}
+    const ok=seq.every(x=>recall.toLowerCase().includes(x.toLowerCase()));
+    show(ok?'✅ Ótimo! Sua memória imediata está coerente.':'⚠️ Você não lembrou tudo. Tente Relaxamento e repita.');
+  },1200);
+}
+function fiveSenses(){ show('Olhe ao redor e nomeie: 5 coisas que você vê, 4 que pode tocar, 3 que pode ouvir, 2 que pode cheirar, 1 que pode saborear. Faça devagar.'); }
 </script>
 </body>
 </html>
