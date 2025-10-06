@@ -1,11 +1,11 @@
 {
   "name": "RealMind",
   "short_name": "RealMind",
-  "start_url": "./index.html",
-  "scope": "./",
+  "description": "Âncora da sua mente. Um app de apoio e realidade para esquizofrênicos.",
+  "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#E6F0FA",
-  "theme_color": "#9C8DF0",
+  "background_color": "#e9efff",
+  "theme_color": "#a78bfa",
   "orientation": "portrait",
   "icons": [
     {
