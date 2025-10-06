@@ -1,5 +1,5 @@
 
-const CACHE='realmind-v2';
+const CACHE='realmind-v3';
 const ASSETS=[
  './','./index.html','./login.html','./cadastro.html','./menu.html',
  './teste.html','./relaxamento.html','./jogos.html','./diario.html','./apoio.html',

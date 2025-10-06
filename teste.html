@@ -5,54 +5,112 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RealMind — Teste de Realidade</title>
 <style>
- body{margin:0;font-family:Arial,sans-serif;color:#fff;background:linear-gradient(135deg,#43cea2,#185a9d)}
- header{padding:18px;text-align:center;background:rgba(0,0,0,.25)}
- .wrap{padding:16px;text-align:center}
+ body{margin:0;color:#fff;background:linear-gradient(135deg,#43cea2,#185a9d);font-family:Arial,sans-serif}
+ header{padding:18px;background:rgba(0,0,0,.25);text-align:center}
  .btn{display:inline-block;margin:6px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.15);color:#fff;text-decoration:none;font-weight:700}
  #result{display:none;background:rgba(0,0,0,.35);margin-top:12px;padding:12px;border-radius:10px}
+ .tabs{display:flex;justify-content:center;gap:8px;margin:10px 0}
+ button.tab{padding:10px 14px;border-radius:10px;border:none;background:#00000022;color:#fff;font-weight:700;cursor:pointer}
+ button.active{background:#ffffff33}
+ section{padding:0 12px 12px}
+ .box{background:rgba(0,0,0,.25);border-radius:16px;padding:12px;margin-bottom:12px}
 </style>
 </head>
 <body>
-<header><h1>🌀 Teste de Realidade</h1><p>Verifique de forma segura</p></header>
-<div class="wrap">
-  <video id="camera" autoplay playsinline style="width:100%;max-width:420px;border-radius:12px;background:#000"></video>
-  <div>
-    <a class="btn" href="#" onclick="startCam()">Abrir câmera</a>
-    <a class="btn" href="#" style="background:#ff8c8c" onclick="stopCam()">Parar</a>
+<header>
+  <h1 style="margin:0">🌀 Teste de Realidade</h1>
+  <p style="margin:4px 0 0">Verificações visuais e auditivas</p>
+</header>
+
+<div class="tabs">
+  <button id="tabV" class="tab active" onclick="setTab('visual')">🧩 Visual</button>
+  <button id="tabA" class="tab" onclick="setTab('auditivo')">🎧 Auditivo</button>
+</div>
+
+<section id="secVisual">
+  <div class="box">
+    <video id="camera" autoplay playsinline style="width:100%;max-width:420px;border-radius:12px;background:#000"></video>
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+      <a class="btn" href="#" onclick="startCam()">Abrir câmera</a>
+      <a class="btn" style="background:#ff8c8c" href="#" onclick="stopCam()">Parar</a>
+    </div>
+    <small id="camStatus" style="display:block;margin-top:6px">Requer HTTPS e permissão do navegador</small>
   </div>
-  <small id="camStatus">Recurso requer HTTPS e permissão do navegador</small>
+  <div class="box">
+    <h3>✅ Checagens rápidas</h3>
+    <a class="btn" href="#" onclick="logicQuestion()">Pergunta de Lógica</a>
+    <a class="btn" href="#" onclick="memoryTest()">Teste de Memória</a>
+    <a class="btn" href="#" onclick="fiveSenses()">Exercício dos 5 sentidos</a>
+    <div id="result"></div>
+  </div>
+</section>
 
-  <h3>✅ Checagens rápidas</h3>
-  <a class="btn" href="#" onclick="logicQuestion()">Pergunta de Lógica</a>
-  <a class="btn" href="#" onclick="memoryTest()">Teste de Memória</a>
-  <a class="btn" href="#" onclick="fiveSenses()">Exercício dos 5 sentidos</a>
-  <div id="result"></div>
+<section id="secAuditivo" style="display:none">
+  <div class="box">
+    <canvas id="viz" width="420" height="120" style="width:100%;max-width:420px;background:#000;border-radius:10px"></canvas>
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+      <a class="btn" href="#" onclick="startMic()">Ativar microfone</a>
+      <a class="btn" style="background:#ff8c8c" href="#" onclick="stopMic()">Parar</a>
+    </div>
+    <small id="micStatus" style="display:block;margin-top:6px">Fale algo perto do microfone para testar</small>
+    <p id="detHint" style="display:none;margin-top:8px;background:#ffffff22;padding:8px;border-radius:10px">🕊️ Nenhum som externo detectado — reflita</p>
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+      <a class="btn" href="#" onclick="startRec()">Gravar</a>
+      <a class="btn" href="#" onclick="stopRec()">Parar</a>
+      <a class="btn" href="#" onclick="playRec()">Reproduzir</a>
+    </div>
+    <audio id="playback" controls style="margin-top:8px;display:none"></audio>
+  </div>
 
+  <div class="box">
+    <h3>🌿 Redirecionamento Auditivo</h3>
+    <a class="btn" href="#" onclick="relaxPlay('rain')">🌧️ Chuva</a>
+    <a class="btn" href="#" onclick="relaxPlay('ocean')">🌊 Mar</a>
+    <a class="btn" href="#" onclick="relaxPlay('forest')">🌳 Floresta</a>
+    <a class="btn" style="background:#ff8c8c" href="#" onclick="relaxStop()">⏹️ Parar</a>
+  </div>
+
+  <div class="box" style="text-align:left">
+    <h3>💭 Reflexão Guiada</h3>
+    <ul>
+      <li>Você está ouvindo agora?</li>
+      <li>Outras pessoas próximas também estão ouvindo?</li>
+      <li>De onde parece vir o som?</li>
+    </ul>
+  </div>
+</section>
+
+<div style="text-align:center;padding:0 12px 24px">
   <a class="btn" href="menu.html">⬅️ Voltar ao Menu</a>
 </div>
+
 <script>
-let streamRef=null;
+// Tabs
+function setTab(t){
+  document.getElementById('secVisual').style.display = (t==='visual')?'block':'none';
+  document.getElementById('secAuditivo').style.display = (t==='auditivo')?'block':'none';
+  document.getElementById('tabV').classList.toggle('active', t==='visual');
+  document.getElementById('tabA').classList.toggle('active', t==='auditivo');
+}
+
+// Visual
+let streamCam=null;
 async function startCam(){
   try{
     const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
-    document.getElementById('camera').srcObject=stream;
-    streamRef=stream;
+    document.getElementById('camera').srcObject=stream; streamCam=stream;
     document.getElementById('camStatus').textContent='Câmera ativa. Aponte para o que deseja verificar.';
-  }catch(e){
-    alert('Não foi possível acessar a câmera: '+e.message);
-  }
+  }catch(e){ alert('Não foi possível acessar a câmera: '+e.message); }
 }
-function stopCam(){ if(streamRef){ streamRef.getTracks().forEach(t=>t.stop()); streamRef=null; document.getElementById('camStatus').textContent='Câmera parada.'; } }
+function stopCam(){ if(streamCam){ streamCam.getTracks().forEach(t=>t.stop()); streamCam=null; document.getElementById('camStatus').textContent='Câmera parada.'; } }
 function show(msg){const r=document.getElementById('result');r.textContent=msg;r.style.display='block'}
 function logicQuestion(){
   const ans=prompt('Que dia da semana é hoje?');
   const day=new Intl.DateTimeFormat('pt-BR',{weekday:'long'}).format(new Date());
-  if(ans && ans.toLowerCase().includes(day.toLowerCase())) show('✅ Correto! Hoje é '+day+'.');
-  else show('⚠️ Hoje é '+day+'. Respire fundo e tente novamente.');
+  if(ans && ans.toLowerCase().includes(day.toLowerCase())) show('✅ Correto! Hoje é '+day+'.'); else show('⚠️ Hoje é '+day+'. Respire fundo e tente novamente.');
 }
 function memoryTest(){
-  const seq=['Azul','Mesa','Gato','3'];
-  alert('Memorize: '+seq.join(' - '));
+  const seq=['Azul','Mesa','Gato','3']; alert('Memorize: '+seq.join(' - '));
   setTimeout(()=>{
     const recall=prompt('Digite as palavras e número (na ordem):');
     if(!recall){show('Sem resposta.');return}
@@ -61,6 +119,93 @@ function memoryTest(){
   },1200);
 }
 function fiveSenses(){ show('Olhe ao redor e nomeie: 5 coisas que você vê, 4 que pode tocar, 3 que pode ouvir, 2 que pode cheirar, 1 que pode saborear. Faça devagar.'); }
+
+// Auditivo
+let ctx, analyser, micStream, dataArray, rafId, mediaRecorder, chunks=[], gain, relaxNodes=[];
+function ensureCtx(){ if(!ctx){ ctx=new (window.AudioContext||window.webkitAudioContext)(); analyser=ctx.createAnalyser(); analyser.fftSize=2048; dataArray=new Uint8Array(analyser.fftSize); gain=ctx.createGain(); gain.gain.value=0.2; gain.connect(ctx.destination);} }
+
+async function startMic(){
+  try{
+    ensureCtx();
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    const src = ctx.createMediaStreamSource(stream);
+    src.connect(analyser);
+    micStream = stream;
+    document.getElementById('micStatus').textContent = 'Microfone ativo. Fale perto do aparelho.';
+    visualize();
+  }catch(e){ alert('Não foi possível acessar o microfone: '+e.message); }
+}
+function stopMic(){
+  if(micStream){ micStream.getTracks().forEach(t=>t.stop()); micStream=null; cancelAnimationFrame(rafId); document.getElementById('micStatus').textContent='Microfone parado.'; }
+}
+
+function visualize(){
+  const canvas = document.getElementById('viz'); const c = canvas.getContext('2d');
+  const hint = document.getElementById('detHint'); let quietCount=0;
+  function draw(){
+    rafId = requestAnimationFrame(draw);
+    analyser.getByteTimeDomainData(dataArray);
+    c.fillStyle='#000'; c.fillRect(0,0,canvas.width,canvas.height);
+    c.lineWidth=2; c.strokeStyle='#35e2b0'; c.beginPath();
+    let sum=0;
+    const slice = canvas.width / dataArray.length;
+    for(let i=0;i<dataArray.length;i++){
+      const v = dataArray[i]/128.0 - 1.0;
+      sum += Math.abs(v);
+      const y = (canvas.height/2) + v * (canvas.height/2 - 10);
+      const x = i * slice;
+      if(i===0) c.moveTo(x,y); else c.lineTo(x,y);
+    }
+    c.stroke();
+    const avg = sum / dataArray.length;
+    if(avg < 0.02){ quietCount++; } else { quietCount=0; }
+    hint.style.display = (quietCount > 60) ? 'block' : 'none';
+  }
+  draw();
+}
+
+// Gravação local
+async function startRec(){
+  if(!micStream){ await startMic(); }
+  try{
+    mediaRecorder = new MediaRecorder(micStream);
+    chunks = [];
+    mediaRecorder.ondataavailable = e => { if(e.data.size>0) chunks.push(e.data); };
+    mediaRecorder.onstop = () => {
+      const blob = new Blob(chunks, {type:'audio/webm'});
+      const url = URL.createObjectURL(blob);
+      const audio = document.getElementById('playback'); audio.src = url; audio.style.display='block';
+    };
+    mediaRecorder.start();
+    document.getElementById('micStatus').textContent='Gravando...';
+  }catch(e){ alert('Falha ao gravar: '+e.message); }
+}
+function stopRec(){
+  if(mediaRecorder && mediaRecorder.state !== 'inactive'){ mediaRecorder.stop(); document.getElementById('micStatus').textContent='Gravação parada.'; }
+}
+function playRec(){
+  const a=document.getElementById('playback'); if(a.src){ a.play(); } else { alert('Grave algo primeiro.'); }
+}
+
+// Sons calmantes (WebAudio)
+function noiseNode(type='white'){
+  const bufferSize=2*ctx.sampleRate;
+  const buffer=ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data=buffer.getChannelData(0); let lastOut=0;
+  for(let i=0;i<bufferSize;i++){ let white=Math.random()*2-1;
+    if(type==='white') data[i]=white;
+    else if(type==='pink'){ lastOut = 0.98*lastOut + 0.02*white; data[i]=lastOut*3.5; }
+    else if(type==='brown'){ lastOut = (lastOut + 0.02*white)/1.02; data[i]=lastOut*5; }
+  }
+  const node=ctx.createBufferSource(); node.buffer=buffer; node.loop=true; return node;
+}
+function relaxStop(){ relaxNodes.forEach(n=>{try{n.stop()}catch(e){}}); relaxNodes=[]; }
+function relaxPlay(kind){
+  ensureCtx(); relaxStop();
+  if(kind==='rain'){ const src=noiseNode('white'); const bp=ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=1000; bp.Q.value=0.8; src.connect(bp); bp.connect(gain); src.start(); relaxNodes=[src]; }
+  if(kind==='ocean'){ const src=noiseNode('brown'); const lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=500; src.connect(lp); lp.connect(gain); src.start(); relaxNodes=[src]; }
+  if(kind==='forest'){ const src=noiseNode('pink'); const lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=1500; const trem=ctx.createOscillator(); const tGain=ctx.createGain(); tGain.gain.value=0.08; trem.frequency.value=0.25; trem.connect(tGain); tGain.connect(gain.gain); trem.start(); src.connect(lp); lp.connect(gain); src.start(); relaxNodes=[src,trem]; }
+}
 </script>
 </body>
 </html>

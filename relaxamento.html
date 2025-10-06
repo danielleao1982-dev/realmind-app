@@ -5,47 +5,45 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RealMind — Relaxamento</title>
 <style>
- body{margin:0;font-family:Arial,sans-serif;color:#fff;background:linear-gradient(135deg,#11998e,#38ef7d)}
- header{padding:18px;text-align:center;background:rgba(0,0,0,.25)}
- .wrap{padding:16px;text-align:center}
+ body{margin:0;color:#fff;background:linear-gradient(135deg,#11998e,#38ef7d);font-family:Arial,sans-serif}
+ header{padding:18px;background:rgba(0,0,0,.25);text-align:center}
  .btn{display:inline-block;margin:6px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.15);color:#fff;text-decoration:none;font-weight:700}
  #circle{margin:28px auto;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.25);animation:breathe 8s infinite}
  @keyframes breathe{0%{transform:scale(1)}50%{transform:scale(1.8)}100%{transform:scale(1)}}
 </style>
 </head>
 <body>
-<header><h1>🌿 Relaxamento</h1><p>Respire junto e acalme</p></header>
-<div class="wrap">
+<header><h1 style="margin:0">🌿 Relaxamento</h1><p>Respire junto e acalme</p></header>
+<div style="padding:16px;text-align:center">
   <h3>Respiração Guiada</h3>
   <div id="circle"></div>
   <p>Inspire quando o círculo crescer, expire quando diminuir.</p>
+
   <h3>Sons Ambientes</h3>
   <a class="btn" href="#" onclick="play('rain')">🌧️ Chuva</a>
   <a class="btn" href="#" onclick="play('ocean')">🌊 Mar</a>
   <a class="btn" href="#" onclick="play('forest')">🌳 Floresta</a>
   <a class="btn" href="#" style="background:#ff8c8c" onclick="stop()">⏹️ Parar</a>
+
   <a class="btn" href="menu.html" style="display:block;margin-top:12px">⬅️ Voltar ao Menu</a>
 </div>
 <script>
-let ctx,gain; let currentNodes=[];
-function ensureCtx(){ if(!ctx){ ctx=new (window.AudioContext||window.webkitAudioContext)(); gain=ctx.createGain(); gain.gain.value=0.2; gain.connect(ctx.destination);} }
-function noiseNode(type='white'){
-  const bufferSize=2*ctx.sampleRate;
-  const buffer=ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-  const data=buffer.getChannelData(0); let lastOut=0;
-  for(let i=0;i<bufferSize;i++){ let white=Math.random()*2-1;
-    if(type==='white') data[i]=white;
-    if(type==='pink'){ lastOut = 0.98*lastOut + 0.02*white; data[i]=lastOut*3.5; }
-    if(type==='brown'){ lastOut = (lastOut + 0.02*white)/1.02; data[i]=lastOut*5; }
+let ctx,gain; let current=[];
+function ensure(){ if(!ctx){ ctx=new (window.AudioContext||window.webkitAudioContext)(); gain=ctx.createGain(); gain.gain.value=0.2; gain.connect(ctx.destination);} }
+function noise(type='white'){
+  const N=2*ctx.sampleRate, b=ctx.createBuffer(1,N,ctx.sampleRate), d=b.getChannelData(0); let last=0;
+  for(let i=0;i<N;i++){ const w=Math.random()*2-1;
+    if(type==='white') d[i]=w;
+    else if(type==='pink'){ last=0.98*last+0.02*w; d[i]=last*3.5; }
+    else if(type==='brown'){ last=(last+0.02*w)/1.02; d[i]=last*5; }
   }
-  const node=ctx.createBufferSource(); node.buffer=buffer; node.loop=true; return node;
+  const s=ctx.createBufferSource(); s.buffer=b; s.loop=true; return s;
 }
-function stop(){ currentNodes.forEach(n=>{try{n.stop()}catch(e){}}); currentNodes=[]; }
-function play(kind){
-  ensureCtx(); stop();
-  if(kind==='rain'){ const src=noiseNode('white'); const bp=ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=1000; bp.Q.value=0.8; src.connect(bp); bp.connect(gain); src.start(); currentNodes=[src]; }
-  if(kind==='ocean'){ const src=noiseNode('brown'); const lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=500; src.connect(lp); lp.connect(gain); src.start(); currentNodes=[src]; }
-  if(kind==='forest'){ const src=noiseNode('pink'); const lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=1500; const trem=ctx.createOscillator(); const tGain=ctx.createGain(); tGain.gain.value=0.1; trem.frequency.value=0.2; trem.connect(tGain); tGain.connect(gain.gain); trem.start(); src.connect(lp); lp.connect(gain); src.start(); currentNodes=[src,trem]; }
+function stop(){ current.forEach(n=>{try{n.stop()}catch{}}); current=[]; }
+function play(k){ ensure(); stop();
+  if(k==='rain'){ const s=noise('white'); const f=ctx.createBiquadFilter(); f.type='bandpass'; f.frequency.value=1000; f.Q.value=0.8; s.connect(f); f.connect(gain); s.start(); current=[s]; }
+  if(k==='ocean'){ const s=noise('brown'); const f=ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=500; s.connect(f); f.connect(gain); s.start(); current=[s]; }
+  if(k==='forest'){ const s=noise('pink'); const f=ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=1500; const o=ctx.createOscillator(); const g=ctx.createGain(); g.gain.value=0.08; o.frequency.value=0.25; o.connect(g); g.connect(gain.gain); o.start(); s.connect(f); f.connect(gain); s.start(); current=[s,o]; }
 }
 </script>
 </body>

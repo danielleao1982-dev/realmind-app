@@ -5,17 +5,16 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RealMind — Rede de Apoio</title>
 <style>
- body{margin:0;font-family:Arial,sans-serif;color:#fff;background:linear-gradient(135deg,#ff416c,#ff4b2b)}
- header{padding:18px;text-align:center;background:rgba(0,0,0,.25)}
- .wrap{padding:16px;text-align:center}
+ body{margin:0;color:#fff;background:linear-gradient(135deg,#ff416c,#ff4b2b);font-family:Arial,sans-serif}
+ header{padding:18px;background:rgba(0,0,0,.25);text-align:center}
  .btn{display:inline-block;margin:6px;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,.15);color:#fff;text-decoration:none;font-weight:700}
  .contact{background:rgba(0,0,0,.3);margin:10px auto;padding:12px;border-radius:12px;width:86%;display:flex;justify-content:space-between;align-items:center}
  .call{background:#00c9ff;border:none;color:#fff;padding:8px 12px;border-radius:8px;cursor:pointer}
 </style>
 </head>
 <body>
-<header><h1>🆘 Rede de Apoio</h1><p>Conecte-se com quem pode ajudar</p></header>
-<div class="wrap">
+<header><h1 style="margin:0)">🆘 Rede de Apoio</h1><p>Conecte-se com quem pode ajudar</p></header>
+<div style="padding:16px;text-align:center">
   <h3>Contatos de confiança</h3>
   <div class="contact"><span>👩 Mãe</span><button class="call" onclick="alert('Ligando para Mãe...')">Ligar</button></div>
   <div class="contact"><span>👨 Irmão</span><button class="call" onclick="alert('Ligando para Irmão...')">Ligar</button></div>
@@ -31,7 +30,7 @@
     <a class="btn" href="#" onclick="copy()">📋 Copiar Mensagem</a>
   </div>
 
-  <a class="btn" href="menu.html">⬅️ Voltar ao Menu</a>
+  <a class="btn" href="menu.html" style="margin-top:12px">⬅️ Voltar ao Menu</a>
 </div>
 <script>
  function copy(){const t=document.getElementById('msg').innerText;navigator.clipboard.writeText(t).then(()=>alert('Mensagem copiada! Cole no WhatsApp ou SMS.'))}

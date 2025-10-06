@@ -1,33 +1,29 @@
-
 <!doctype html>
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RealMind — Login</title>
+<link rel="manifest" href="manifest.json">
+
 <style>
- body{margin:0;height:100vh;display:flex;align-items:center;justify-content:center;background:#E6F0FA;font-family:Arial,sans-serif;color:#2D3E50}
- .card{width:min(92vw,360px);background:#fff;border-radius:20px;padding:24px;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.2)}
- .logo{background:#9C8DF0;width:70px;height:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
- .logo svg{width:36px;height:36px;fill:#fff}
- h1{margin:0 0 20px 0}
- input{width:92%;padding:12px;border-radius:12px;border:1px solid #ccc;margin:6px 0;font-size:16px}
- a.btn{display:block;width:100%;padding:12px;border-radius:12px;margin-top:10px;text-decoration:none;font-weight:700}
- .primary{background:#9C8DF0;color:#fff}
- .secondary{background:#38ef7d;color:#fff}
- .link{margin-top:10px;color:#555;display:block;text-decoration:none;font-size:14px}
+:root { --bg:#E6F0FA; --ink:#2D3E50; --lilac:#9C8DF0; }
+body{margin:0;font-family:Arial,system-ui,sans-serif;color:var(--ink);}
+.btn{display:inline-block;margin:6px;padding:12px 16px;border-radius:12px;background:#9C8DF0;color:#fff;text-decoration:none;font-weight:700}
+.card{width:min(92vw,420px);background:#fff;border-radius:20px;padding:24px;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.2)}
 </style>
 </head>
-<body>
+
+<body style="height:100vh;display:flex;align-items:center;justify-content:center;background:#E6F0FA">
   <div class="card">
-    <div class="logo">
+    <div style="background:#9C8DF0;width:70px;height:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
       <svg viewBox="0 0 24 24" style="width:36px;height:36px;fill:#fff"><path d="M12 2c-4.9 0-9 3.6-9 8 0 3.1 2.2 5.9 5.5 7.2l.5.2V20c0 1.1.9 2 2 2h2c1.1 0 2-.9 2-2v-2.6l.5-.2C18.8 15.9 21 13.1 21 10c0-4.4-4.1-8-9-8z"/></svg>
     </div>
-    <h1>Entrar</h1>
-    <input placeholder="Nome de usuário">
-    <input type="password" placeholder="Senha">
-    <a class="btn primary" href="menu.html">Entrar</a>
-    <a class="btn secondary" href="cadastro.html">Criar Conta</a>
-    <a class="link" href="menu.html">Continuar sem login</a>
+    <h1 style="margin:0 0 16px">Entrar</h1>
+    <input style="width:92%;padding:12px;border-radius:12px;border:1px solid #ccc;margin:6px 0;font-size:16px" placeholder="Nome de usuário">
+    <input type="password" style="width:92%;padding:12px;border-radius:12px;border:1px solid #ccc;margin:6px 0;font-size:16px" placeholder="Senha">
+    <a class="btn" href="menu.html">Entrar</a>
+    <a class="btn" style="background:#38ef7d" href="cadastro.html">Criar Conta</a>
+    <a href="menu.html" style="display:block;margin-top:10px;color:#555;text-decoration:none">Continuar sem login</a>
   </div>
 </body>
 </html>
