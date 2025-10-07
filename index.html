@@ -1,24 +1,47 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RealMind — Splash</title>
-<link rel="manifest" href="manifest.json">
-<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js');</script>
-<style>
-:root { --bg:#E6F0FA; --ink:#2D3E50; --lilac:#9C8DF0; }
-body{margin:0;font-family:Arial,system-ui,sans-serif;color:var(--ink);}
-.btn{display:inline-block;margin:6px;padding:12px 16px;border-radius:12px;background:#9C8DF0;color:#fff;text-decoration:none;font-weight:700}
-.card{width:min(92vw,420px);background:#fff;border-radius:20px;padding:24px;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.2)}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RealMind v5</title>
+  <meta name="description" content="RealMind — apoio diário com testes de realidade, respiração, diário e agenda.">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0ea5e9"/>
+  <link rel="icon" href="icons/icon-192.png">
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { color-scheme: light dark; }
+    .safe-area { padding-bottom: env(safe-area-inset-bottom); }
+  </style>
 </head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+  <header class="sticky top-0 z-40 bg-white/80 dark:bg-slate-800/80 backdrop-blur border-b border-slate-200 dark:border-slate-700">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="icons/icon-192.png" class="w-8 h-8 rounded" alt="RealMind">
+        <div class="font-semibold">RealMind <span class="text-sky-600">v5</span></div>
+      </div>
+      <button id="installBtn" class="text-sm px-3 py-1 rounded border border-slate-300 dark:border-slate-600">Instalar</button>
+    </div>
+  </header>
 
-<body style="height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#E6F0FA">
-  <div style="width:120px;height:120px;border-radius:50%;background:#9C8DF0;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(0,0,0,.18);margin-bottom:20px">
-    <svg viewBox="0 0 24 24" style="width:70px;height:70px;fill:#fff"><path d="M12 2c-4.9 0-9 3.6-9 8 0 3.1 2.2 5.9 5.5 7.2l.5.2V20c0 1.1.9 2 2 2h2c1.1 0 2-.9 2-2v-2.6l.5-.2C18.8 15.9 21 13.1 21 10c0-4.4-4.1-8-9-8z"/></svg>
-  </div>
-  <h1 style="margin:0">RealMind</h1>
-  <p style="opacity:.8;margin:8px 0 20px">Âncora da sua mente</p>
-  <a class="btn" href="login.html">Entrar</a>
+  <main id="app" class="max-w-3xl mx-auto w-full px-4 py-4 grow"></main>
+
+  <nav class="safe-area sticky bottom-0 z-40 bg-white/95 dark:bg-slate-800/95 border-t border-slate-200 dark:border-slate-700">
+    <div class="max-w-3xl mx-auto grid grid-cols-4 gap-1 p-2 text-xs">
+      <a href="#/inicio" class="tab px-3 py-2 rounded text-center hover:bg-slate-100 dark:hover:bg-slate-700">Início</a>
+      <a href="#/realidade" class="tab px-3 py-2 rounded text-center hover:bg-slate-100 dark:hover:bg-slate-700">Realidade</a>
+      <a href="#/respirar" class="tab px-3 py-2 rounded text-center hover:bg-slate-100 dark:hover:bg-slate-700">Respirar</a>
+      <a href="#/agenda" class="tab px-3 py-2 rounded text-center hover:bg-slate-100 dark:hover:bg-slate-700">Agenda</a>
+      <a href="#/diario" class="tab px-3 py-2 rounded text-center hover:bg-slate-100 dark:hover:bg-slate-700">Diário</a>
+      <a href="#/sos" class="tab px-3 py-2 rounded text-center hover:bg-slate-100 dark:hover:bg-slate-700">SOS</a>
+      <a href="#/estatisticas" class="tab px-3 py-2 rounded text-center hover:bg-slate-100 dark:hover:bg-slate-700">Estatísticas</a>
+      <a href="#/config" class="tab px-3 py-2 rounded text-center hover:bg-slate-100 dark:hover:bg-slate-700">Config.</a>
+    </div>
+  </nav>
+
+  <script type="module" src="js/app.js"></script>
+  <script src="js/install.js"></script>
 </body>
 </html>
